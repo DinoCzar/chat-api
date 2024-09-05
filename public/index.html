@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta charset='UTF-8' />
+		<meta name='viewport' content='width=device-width, initial-scale=1.0' />
 		<title>ChatGPT Prompt Form</title>
 		<style>
 			body {
@@ -36,14 +36,14 @@
 		</style>
 	</head>
 	<body>
-		<div class="form-container">
+		<div class='form-container'>
 			<h1>Submit a Prompt</h1>
-			<form id="promptForm">
-				<label for="promptInput">Enter your prompt:</label>
-				<textarea id="promptInput" name="prompt" required></textarea>
-				<button type="submit">Submit</button>
+			<form id='promptForm'>
+				<label for='promptInput'>Enter your prompt:</label>
+				<textarea id='promptInput' name='prompt' required></textarea>
+				<button type='submit'>Submit</button>
 			</form>
-			<div class="result" id="result">
+			<div class='result' id='result'>
 				<!-- Result will be displayed here -->
 			</div>
 		</div>
@@ -51,19 +51,37 @@
 		<script>
 			document
 				.getElementById('promptForm')
-				.addEventListener('submit', function (event) {
+				.addEventListener('submit', async function (event) {
 					event.preventDefault(); // Prevent form submission
 
 					// Get the value from the textarea
 					const prompt = document.getElementById('promptInput').value;
 
-					// Store or use the prompt data as needed
-					console.log('Prompt submitted:', prompt);
+					try {
+						const response = await fetch(
+							'http://localhost:3000/submit-prompt',
+							{
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+								},
+								body: JSON.stringify({ prompt }),
+							}
+						);
 
-					// Display the prompt data in the result div
-					document.getElementById(
-						'result'
-					).innerText = `Prompt submitted: ${prompt}`;
+						if (!response.ok) {
+							throw new Error('Network response was not ok');
+						}
+
+						const data = await response.json();
+						document.getElementById(
+							'result'
+						).innerText = `ChatGPT response: ${data.message}`;
+					} catch (error) {
+						document.getElementById(
+							'result'
+						).innerText = `Error: ${error.message}`;
+					}
 				});
 		</script>
 	</body>

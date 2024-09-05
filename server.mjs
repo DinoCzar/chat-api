@@ -1,42 +1,54 @@
-// Import the fetch function from node-fetch
+import express from 'express';
 import fetch from 'node-fetch';
-
-// Load environment variables from .env file
+import cors from 'cors'; // Import the cors middleware
 import 'dotenv/config';
+
+const app = express();
+const PORT = 3000;
+
+// Use the cors middleware
+app.use(cors());
+
+// Middleware to parse JSON request bodies
+app.use(express.json());
 
 // Your OpenAI API key from the .env file
 const API_KEY = process.env.OPENAI_API_KEY;
 
-// Define the prompt you want to send to ChatGPT
-const prompt = 'What color is the sky';
-
-// Define the OpenAI API endpoint and the request options
+// Define the OpenAI API endpoint
 const endpoint = 'https://api.openai.com/v1/chat/completions';
-const requestOptions = {
-	method: 'POST',
-	headers: {
-		'Content-Type': 'application/json',
-		Authorization: `Bearer ${API_KEY}`,
-	},
-	body: JSON.stringify({
-		model: 'gpt-3.5-turbo',
-		messages: [{ role: 'user', content: prompt }],
-	}),
-};
 
-// Function to submit the prompt and log the response
-const getChatGPTResponse = async () => {
+// Endpoint to handle prompt submissions
+app.post('/submit-prompt', async (req, res) => {
+	const { prompt } = req.body;
+
+	// Define the request options
+	const requestOptions = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${API_KEY}`,
+		},
+		body: JSON.stringify({
+			model: 'gpt-3.5-turbo',
+			messages: [{ role: 'user', content: prompt }],
+		}),
+	};
+
 	try {
 		const response = await fetch(endpoint, requestOptions);
 		if (!response.ok) {
 			throw new Error(`HTTP error! Status: ${response.status}`);
 		}
 		const data = await response.json();
-		console.log('Response from ChatGPT:', data.choices[0].message.content);
+		res.json({ message: data.choices[0].message.content });
 	} catch (error) {
 		console.error('Error fetching response from ChatGPT:', error);
+		res.status(500).json({ error: 'Failed to fetch response from ChatGPT' });
 	}
-};
+});
 
-// Run the function to get the response
-getChatGPTResponse();
+// Start the server
+app.listen(PORT, () => {
+	console.log(`Server is running on http://localhost:${PORT}`);
+});
