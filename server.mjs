@@ -8,7 +8,7 @@ import 'dotenv/config';
 const API_KEY = process.env.OPENAI_API_KEY;
 
 // Define the prompt you want to send to ChatGPT
-const prompt = 'Hello, ChatGPT! How are you today?';
+const prompt = 'What color is the sky';
 
 // Define the OpenAI API endpoint and the request options
 const endpoint = 'https://api.openai.com/v1/chat/completions';
