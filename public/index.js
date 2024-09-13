@@ -22,7 +22,7 @@ document
 			const data = await response.json();
 			document.getElementById(
 				'result'
-			).innerText = `ChatGPT response: ${data.message}`;
+			).innerText = `${data.message}`;
 		} catch (error) {
 			document.getElementById('result').innerText = `Error: ${error.message}`;
 		}
