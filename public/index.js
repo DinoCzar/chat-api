@@ -27,6 +27,10 @@ document
 			if (recentPrompts) {
 				const recentPromptsObject = JSON.parse(recentPrompts);
 				recentPromptsObject.push({ prompt, response: data.message });
+				// Keep only the 1 most recent prompts
+				if (recentPromptsObject.length > 1) {
+					recentPromptsObject.shift();
+				}
 				sessionStorage.setItem(
 					'recentPrompts',
 					JSON.stringify(recentPromptsObject),
