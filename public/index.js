@@ -20,9 +20,24 @@ document
 			}
 
 			const data = await response.json();
-			document.getElementById(
-				'result'
-			).innerText = `${data.message}`;
+			document.getElementById('result').innerText = `${data.message}`;
+
+			// Store the prompt in session storage
+			const recentPrompts = sessionStorage.getItem('recentPrompts');
+			if (recentPrompts) {
+				const recentPromptsObject = JSON.parse(recentPrompts);
+				recentPromptsObject.push({ prompt, response: data.message });
+				sessionStorage.setItem(
+					'recentPrompts',
+					JSON.stringify(recentPromptsObject),
+					console.log(recentPromptsObject)
+				);
+			} else {
+				sessionStorage.setItem(
+					'recentPrompts',
+					JSON.stringify([{ prompt, response: data.message }])
+				);
+			}
 		} catch (error) {
 			document.getElementById('result').innerText = `Error: ${error.message}`;
 		}
