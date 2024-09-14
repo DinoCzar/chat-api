@@ -37,6 +37,9 @@ document
 			// Log the prompts string to the console for debugging
 			console.log(promptsString);
 
+			const language = document.getElementById('language').value;
+			console.log(language);
+
 			// Send a POST request to the server with the prompts string
 			const response = await fetch('http://localhost:3000/submit-prompt', {
 				method: 'POST',
@@ -45,7 +48,7 @@ document
 				},
 				body: JSON.stringify({
 					prompt:
-						"Write response in less than 5 words. Do not add ChatGPT\'s name." +
+						'Write response in ' + language + ' with less than 5 words. Do not add ChatGPT\'s name.' +
 						promptsString,
 				}),
 			});
