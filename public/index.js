@@ -19,9 +19,9 @@ document
 			if (recentPrompts) {
 				// Parse the recent prompts from JSON to a JavaScript object
 				const recentPromptsObject = JSON.parse(recentPrompts);
-				// Extract the last 3 prompts and responses
-				const lastFewPrompts = recentPromptsObject.slice(-3);
-				// Map the last 3 prompts and responses to a string format
+				// Extract the last 5 prompts and responses
+				const lastFewPrompts = recentPromptsObject.slice(-5);
+				// Map the last 5 prompts and responses to a string format
 				promptsToSubmit = lastFewPrompts.map(
 					({ prompt, response }) => `${prompt} ${response}`
 				);
