@@ -11,7 +11,7 @@ document
 
 			if (recentPrompts) {
 				const recentPromptsObject = JSON.parse(recentPrompts);
-				const lastFewPrompts = recentPromptsObject.slice(-5);
+				const lastFewPrompts = recentPromptsObject.slice(-2);
 				promptsToSubmit = lastFewPrompts.map(
 					({ prompt, response }) => `${prompt} ${response}`
 				);
@@ -35,7 +35,7 @@ document
 					prompt:
 						'Write response in ' +
 						language +
-						' with less than 5 words. Do not add ChatGPT\'s name.' +
+						' with less than 5 words. Don\'t add ChatGPT\'s name.' +
 						promptsString,
 				}),
 			});
